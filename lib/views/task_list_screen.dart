@@ -12,17 +12,33 @@ class TaskListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text('TODO List')),
-      body: ListView.builder(
-        itemCount: taskViewModel.tasks.length,
-        itemBuilder: (context, index) {
-          final task = taskViewModel.tasks[index];
-          return TaskTile(
-            task: task,
-            onToggle: () {
-              task.completed = !task.completed;
-              taskViewModel.updateTask(task);
-            },
-            onDelete: () => taskViewModel.deleteTask(task.id),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double width = constraints.maxWidth;
+          bool isTablet = width > 600; // Check if the device is a tablet
+
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 40.0 : 16.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: taskViewModel.tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = taskViewModel.tasks[index];
+                      return TaskTile(
+                        task: task,
+                        onToggle: () {
+                          task.completed = !task.completed;
+                          taskViewModel.updateTask(task);
+                        },
+                        onDelete: () => taskViewModel.deleteTask(task.id),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

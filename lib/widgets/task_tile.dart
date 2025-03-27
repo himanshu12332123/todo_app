@@ -10,11 +10,21 @@ class TaskTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(task.title, style: TextStyle(decoration: task.completed ? TextDecoration.lineThrough : null)),
-      subtitle: Text(task.description),
-      trailing: Checkbox(value: task.completed, onChanged: (value) => onToggle()),
-      onLongPress: onDelete,
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isTablet = screenWidth > 600;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isTablet ? 40.0 : 16.0, vertical: 8.0),
+      child: Card(
+        elevation: 4,
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: isTablet ? 24.0 : 16.0),
+          title: Text(task.title, style: TextStyle(fontSize: isTablet ? 22.0 : 18.0, fontWeight: FontWeight.bold)),
+          subtitle: Text(task.description, style: TextStyle(fontSize: isTablet ? 18.0 : 14.0)),
+          trailing: Checkbox(value: task.completed, onChanged: (value) => onToggle()),
+          onLongPress: onDelete,
+        ),
+      ),
     );
   }
 }
